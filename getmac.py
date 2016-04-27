@@ -22,6 +22,19 @@ def getmacs(active=True):
         macs.append(addr)
     return macs
 
+def mac2Serial(mac):
+    sum=0
+    for i,c in enumerate(mac):
+        if c.isdigit(): sum+=sum+int(c)*(2*i)
+        elif c.isalpha(): sum+=sum+ord(c)*(2*i)
+    return sum
+
+def generateKey(serial):
+    return int(serial*serial+53/serial+113*(serial/4))
+
+def checkKey(serial,key):
+    return key==generateKey(serial)
+
 if __name__=="__main__":
     print("Active Interfaces:")
     print("==================")
@@ -30,3 +43,18 @@ if __name__=="__main__":
     print("All Interfaces:")
     print("===============")
     print(getmacs(False))
+    print()
+    print("Serial:")
+    print("=======")
+    serial=mac2Serial(getmacs()[0])
+    print(serial)
+    print()
+    print("Key:")
+    print("====")
+    key=generateKey(serial)
+    print(key)
+    print()
+    print("Activate:")
+    print("=========")
+    print(checkKey(serial, key))
+    print()
