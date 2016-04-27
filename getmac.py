@@ -16,7 +16,10 @@ def getmacs(active=True):
         if af_inet and af_inet[0]['addr']=="127.0.0.1": continue
         if af_inet6 and af_inet6[0]['addr']=="::1": continue
 
-        macs.append(af_link[0]['addr'])
+        addr=af_link[0]['addr']
+        if platform.system()=="Windows" and addr=="00:00:00:00:00:00:00:e0": continue
+
+        macs.append(addr)
     return macs
 
 if __name__=="__main__":
